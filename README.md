@@ -6,7 +6,7 @@ It is loosely based on the Python 2 binding projects [pyFluidSynth](http://code.
 
 ## License
 
-Copyright 2013, Stefan Gfrörer aka tea2code.
+Copyright 2013, Stefan Gfroerer aka tea2code.
 
 Released under the [GNU Lesser GPL (LGPL)](http://www.gnu.org/copyleft/lesser.html).
 
