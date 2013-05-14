@@ -13,3 +13,7 @@ Released under the [GNU Lesser GPL (LGPL)](http://www.gnu.org/copyleft/lesser.ht
 ## Example
 
 *TODO*
+
+## Development
+
+I normally prefer camel case function and variable names. But to give a uniform look with the native FluidSynth functions i used an underscore based style.

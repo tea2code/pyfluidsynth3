@@ -12,11 +12,12 @@ class FluidHandle():
     MostAwesomeDude.
     
     Member:
-    libraryPath -- The path of the loaded library (string).
-    _handle -- The raw library handle. '''
+    library_path -- The path of the loaded library (string).
+    _handle -- The raw library handle. 
+    '''
     
-    def __init__( self, libraryPath = None ):
-        self._handle = self.loadLibrary( libraryPath )
+    def __init__( self, library_path = None ):
+        self._handle = self.load_library( library_path )
         
         # From settings.h
         self.new_fluid_settings = self._handle.new_fluid_settings
@@ -55,15 +56,17 @@ class FluidHandle():
         self.fluid_settings_setstr.argtypes = (c_void_p, c_char_p, c_char_p)
         self.fluid_settings_setstr.restype = c_int
 
-    def loadLibrary( self, libraryPath ):
+    def load_library( self, library_path ):
         ''' Create new FluidSynth handle with given library path. If no specific path is given
         or the file doesn't exist this class will try to find the library based on some basic 
         heuristics. '''
         
         # TODO: Search in current directory.
-        if not libraryPath or not os.path.isfile( libraryPath ):
-            self.libraryPath = find_library('fluidsynth') or \
-                               find_library('libfluidsynth') or \
-                               find_library('libfluidsynth-1')
+        if not library_path or not os.path.isfile( library_path ):
+            self.library_path = find_library('fluidsynth') or \
+                                find_library('libfluidsynth') or \
+                                find_library('libfluidsynth-1')
+        else:
+            self.library_path = library_path
             
-        return cdll.LoadLibrary( self.libraryPath )
+        return cdll.LoadLibrary( self.library_path )
