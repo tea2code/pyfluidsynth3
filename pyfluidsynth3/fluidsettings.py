@@ -12,6 +12,8 @@ class FluidSettings(object):
     fluidsettings['audio.driver'] = 'alsa'
     
     Constants:
+    ENCODING -- The encoding for strings.
+    
     FLUID_NO_TYPE -- Settings type: Undefined type.
     FLUID_NUM_TYPE -- Settings type: Numeric (double).
     FLUID_INT_TYPE -- Settings type: Integer.
@@ -30,6 +32,8 @@ class FluidSettings(object):
     settings -- The FluidSynth settings object (fluidsettings_t).
     '''
     
+    ENCODING = 'ascii'
+    
     (FLUID_NO_TYPE, 
      FLUID_NUM_TYPE, 
      FLUID_INT_TYPE, 
@@ -47,7 +51,7 @@ class FluidSettings(object):
         ''' Create new FluidSynth settings instance using the given handle. Default quality is set 
         to medium. '''
         self.handle = handle
-        self.settings = self.handle.new_fluidsettings()
+        self.settings = self.handle.new_fluid_settings()
         self.quality = self.QUALITY_MEDIUM
 
     @property
@@ -77,21 +81,23 @@ class FluidSettings(object):
 
     def __del__( self ):
         ''' Deletes the FluidSynth settings object. '''
-        self.handle.delete_fluidsettings( self.settings )
+        self.handle.delete_fluid_settings( self.settings )
 
     def __getitem__( self, key ):
         ''' Returns the value of the given settings key. '''
-        key_type = self.handle.fluidsettings_get_type( self.settings, key )
+        
+        key = key.encode( self.ENCODING )
+        key_type = self.handle.fluid_settings_get_type( self.settings, key )
         
         if key_type == self.FLUID_NUM_TYPE:
             val = c_double()
-            func = self.handle.fluidsettings_getnum
+            func = self.handle.fluid_settings_getnum
         elif key_type == self.FLUID_INT_TYPE:
             val = c_int()
-            func = self.handle.fluidsettings_getint
+            func = self.handle.fluid_settings_getint
         elif key_type == self.FLUID_STR_TYPE:
             val = c_char_p()
-            func = self.handle.fluidsettings_getstr
+            func = self.handle.fluid_settings_getstr
         else:
             raise KeyError( key )
 
@@ -102,10 +108,13 @@ class FluidSettings(object):
 
     def __setitem__( self, key, value ):
         ''' Sets the value of the given settings key to value. '''
-        key_type = self.handle.fluidsettings_get_type( self.settings, key )
+        
+        key = key.encode( self.ENCODING )
+        key_type = self.handle.fluid_settings_get_type( self.settings, key )
         
         if key_type == self.FLUID_STR_TYPE:
-            if not self.handle.fluidsettings_setstr( self.settings, key, value ):
+            value = value.encode( self.ENCODING )
+            if not self.handle.fluid_settings_setstr( self.settings, key, value ):
                 raise KeyError( key )
             
         else:
@@ -113,11 +122,11 @@ class FluidSettings(object):
             value = self.__coerce_to_int( value )
             
             if key_type == self.FLUID_NUM_TYPE:
-                if not self.handle.fluidsettings_setnum( self.settings, key, value ):
+                if not self.handle.fluid_settings_setnum( self.settings, key, value ):
                     raise KeyError( key )
                 
             elif key_type == self.FLUID_INT_TYPE:
-                if not self.handle.fluidsettings_setint( self.settings, key, value ):
+                if not self.handle.fluid_settings_setint( self.settings, key, value ):
                     raise KeyError( key )
                 
             else:
