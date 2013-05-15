@@ -37,7 +37,7 @@ class FluidSettings(object):
      FLUID_SET_TYPE) = range(-1, 4)
      
     QUALITY_LOW = 'low'
-    QUALITY_MED = 'med'
+    QUALITY_MEDIUM = 'med'
     QUALITY_HIGH = 'high'
     
     FALSE = 0
@@ -46,27 +46,27 @@ class FluidSettings(object):
     def __init__( self, handle ):
         self._handle = handle
         self._settings = self._handle.new_fluid_settings()
-        self.quality = self.QUALITY_MED
+        self.quality = self.QUALITY_MEDIUM
 
     @property
     def quality( self ):
         return self._quality
 
     @quality.setter
-    def quality( self, value ):
-        self._quality = value
+    def quality( self, quality ):
+        self._quality = quality
         
-        if value == self.QUALITY_LOW:
+        if quality == self.QUALITY_LOW:
             self['synth.chorus.active'] = self.FALSE
             self['synth.reverb.active'] = self.FALSE
             self['synth.sample-rate'] = 22050
             
-        elif value == self.QUALITY_MED:
+        elif quality == self.QUALITY_MEDIUM:
             self['synth.chorus.active'] = self.FALSE
             self['synth.reverb.active'] = self.TRUE
             self['synth.sample-rate'] = 44100
             
-        elif value == self.QUALITY_HIGH:
+        elif quality == self.QUALITY_HIGH:
             self['synth.chorus.active'] = self.TRUE
             self['synth.reverb.active'] = self.TRUE
             self['synth.sample-rate'] = 44100
