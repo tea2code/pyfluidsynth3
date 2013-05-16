@@ -12,7 +12,10 @@ Released under the [GNU Lesser GPL (LGPL)](http://www.gnu.org/copyleft/lesser.ht
 
 ## Example
 
-*TODO*
+    from pyfluidsynth3 import fluidhandle, fluidsettings
+
+    handle = fluidhandle.FluidHandle( 'libfluidsynth.dll' )
+    settings = fluidsettings.FluidSettings( handle )
 
 ## Development
 
