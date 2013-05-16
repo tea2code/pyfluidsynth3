@@ -1,4 +1,4 @@
-from ctypes import byref, c_char_p, c_double, c_int
+from ctypes import byref, c_char_p, c_double, c_int, POINTER
 
 class FluidSettings(object):
     ''' Represents the FluidSynth settings as defined in settings.h. A instance of this class 
@@ -32,7 +32,7 @@ class FluidSettings(object):
     settings -- The FluidSynth settings object (fluidsettings_t).
     '''
     
-    ENCODING = 'ascii'
+    ENCODING = 'utf-8'
     
     (FLUID_NO_TYPE, 
      FLUID_NUM_TYPE, 
@@ -89,13 +89,13 @@ class FluidSettings(object):
         key = key.encode( self.ENCODING )
         key_type = self.handle.fluid_settings_get_type( self.settings, key )
         
-        if key_type == self.FLUID_NUM_TYPE:
+        if key_type is self.FLUID_NUM_TYPE:
             val = c_double()
             func = self.handle.fluid_settings_getnum
-        elif key_type == self.FLUID_INT_TYPE:
+        elif key_type is self.FLUID_INT_TYPE:
             val = c_int()
             func = self.handle.fluid_settings_getint
-        elif key_type == self.FLUID_STR_TYPE:
+        elif key_type is self.FLUID_STR_TYPE:
             val = c_char_p()
             func = self.handle.fluid_settings_getstr
         else:
@@ -112,7 +112,7 @@ class FluidSettings(object):
         key = key.encode( self.ENCODING )
         key_type = self.handle.fluid_settings_get_type( self.settings, key )
         
-        if key_type == self.FLUID_STR_TYPE:
+        if key_type is self.FLUID_STR_TYPE:
             value = value.encode( self.ENCODING )
             if not self.handle.fluid_settings_setstr( self.settings, key, value ):
                 raise KeyError( key )
@@ -121,11 +121,11 @@ class FluidSettings(object):
             # Coerce string value to integer before going further.
             value = self.__coerce_to_int( value )
             
-            if key_type == self.FLUID_NUM_TYPE:
+            if key_type is self.FLUID_NUM_TYPE:
                 if not self.handle.fluid_settings_setnum( self.settings, key, value ):
                     raise KeyError( key )
                 
-            elif key_type == self.FLUID_INT_TYPE:
+            elif key_type is self.FLUID_INT_TYPE:
                 if not self.handle.fluid_settings_setint( self.settings, key, value ):
                     raise KeyError( key )
                 

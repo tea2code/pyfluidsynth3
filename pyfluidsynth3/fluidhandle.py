@@ -48,7 +48,7 @@ class FluidHandle():
         self.fluid_settings_setnum.argtypes = (c_void_p, c_char_p, c_double)
         self.fluid_settings_setnum.restype = c_int
         
-        self.fluid_settings_setint = self.handle.fluid_settings_setnum
+        self.fluid_settings_setint = self.handle.fluid_settings_setint
         self.fluid_settings_setint.argtypes = (c_void_p, c_char_p, c_int)
         self.fluid_settings_setint.restype = c_int
         
