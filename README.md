@@ -37,3 +37,7 @@ Released under the [GNU Lesser GPL (LGPL)](http://www.gnu.org/copyleft/lesser.ht
 ## Development
 
 I normally prefer camel case function and variable names. But to give a uniform look with the native FluidSynth functions i used an underscore based style.
+
+I tried to give every method a meaningful result which also matches more the original FluidSynth behavior. To make things easier a translated FluidSynth results if possible. For example return methods like *noteon()* a boolean instead of *FLUID_OK* or *FLUID_FAILED*.
+
+If you try to access FluidSynth raw method you must encode every string parameter because of Python 3's navtive unicode support. I added a utility method *fluidstring()* which does this.
