@@ -113,6 +113,31 @@ class FluidHandle():
         self.delete_fluid_audio_driver = self.handle.delete_fluid_audio_driver
         self.delete_fluid_audio_driver.argtypes = (c_void_p,)
         self.delete_fluid_audio_driver.restype = None
+        
+        # From midi.h
+        self.new_fluid_player = self.handle.new_fluid_player
+        self.new_fluid_player.argtypes = (c_void_p,)
+        self.new_fluid_player.restype = c_void_p
+        
+        self.delete_fluid_player = self.handle.delete_fluid_player
+        self.delete_fluid_player.argtypes = (c_void_p,)
+        self.delete_fluid_player.restype = c_int
+        
+        self.fluid_player_add = self.handle.fluid_player_add
+        self.fluid_player_add.argtypes = (c_void_p, c_char_p)
+        self.fluid_player_add.restype = c_int
+        
+        self.fluid_player_play = self.handle.fluid_player_play
+        self.fluid_player_play.argtypes = (c_void_p,)
+        self.fluid_player_play.restype = c_int
+        
+        self.fluid_player_stop = self.handle.fluid_player_stop
+        self.fluid_player_stop.argtypes = (c_void_p,)
+        self.fluid_player_stop.restype = c_int
+        
+        self.fluid_player_join = self.handle.fluid_player_join
+        self.fluid_player_join.argtypes = (c_void_p,)
+        self.fluid_player_join.restype = c_int
 
     def load_library( self, library_path ):
         ''' Create new FluidSynth handle with given library path. If no specific path is given

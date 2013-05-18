@@ -1,5 +1,6 @@
-from pyfluidsynth3 import fluidaudiodriver, fluidhandle, fluidsettings, fluidsynth
+from pyfluidsynth3 import fluidaudiodriver, fluidhandle, fluidplayer, fluidsettings, fluidsynth
 
+import sys
 import time
 
 handle = fluidhandle.FluidHandle( 'F:/Programmieren/librarys/fluidsynth-bin/libfluidsynth.dll' )
@@ -10,6 +11,7 @@ synth.load_soundfont( 'F:/Programmieren/librarys/fluidsynth-bin/FluidR3_GM.sf2' 
 
 driver = fluidaudiodriver.FluidAudioDriver( handle, synth, settings )
 
+# Play sequence of notes.
 seq = (79, 78, 79, 74, 79, 69, 79, 67, 79, 72, 79, 76,
        79, 78, 79, 74, 79, 69, 79, 67, 79, 72, 79, 76,
        79, 78, 79, 74, 79, 72, 79, 76, 79, 78, 79, 74,
@@ -22,3 +24,10 @@ for note in seq:
     synth.noteon( 0, note, 1.0 )
     time.sleep( 0.1 )
     synth.noteoff( 0, note )
+    
+# Play MIDI file with player if given.
+if len(sys.argv) > 1:
+    player = fluidplayer.FluidPlayer( handle, synth )
+
+    player.play( sys.argv[1] )
+    player.join()
