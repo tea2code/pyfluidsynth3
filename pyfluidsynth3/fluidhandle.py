@@ -104,6 +104,15 @@ class FluidHandle():
         self.fluid_synth_bank_select = self.handle.fluid_synth_bank_select
         self.fluid_synth_bank_select.argtypes = (c_void_p, c_int, c_int)
         self.fluid_synth_bank_select.restype = c_int
+        
+        # From audio.h
+        self.new_fluid_audio_driver = self.handle.new_fluid_audio_driver
+        self.new_fluid_audio_driver.argtypes = (c_void_p, c_void_p)
+        self.new_fluid_audio_driver.restype = c_void_p
+        
+        self.delete_fluid_audio_driver = self.handle.delete_fluid_audio_driver
+        self.delete_fluid_audio_driver.argtypes = (c_void_p,)
+        self.delete_fluid_audio_driver.restype = None
 
     def load_library( self, library_path ):
         ''' Create new FluidSynth handle with given library path. If no specific path is given

@@ -1,4 +1,4 @@
-from pyfluidsynth3 import fluidhandle, fluidsettings, fluidsynth
+from pyfluidsynth3 import fluidaudiodriver, fluidhandle, fluidsettings, fluidsynth
 
 import time
 
@@ -8,7 +8,7 @@ synth = fluidsynth.FluidSynth( handle, settings )
 
 synth.load_soundfont( 'F:/Programmieren/librarys/fluidsynth-bin/FluidR3_GM.sf2' )
 
-# driver = fluidsynth.FluidAudioDriver(settings, synth)
+driver = fluidaudiodriver.FluidAudioDriver( handle, synth, settings )
 
 seq = (79, 78, 79, 74, 79, 69, 79, 67, 79, 72, 79, 76,
        79, 78, 79, 74, 79, 69, 79, 67, 79, 72, 79, 76,
