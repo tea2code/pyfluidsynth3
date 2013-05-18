@@ -1,3 +1,4 @@
+from . import utility
 from ctypes import byref, c_char_p, c_double, c_int, POINTER
 
 class FluidSettings(object):
@@ -12,8 +13,6 @@ class FluidSettings(object):
     fluidsettings['audio.driver'] = 'alsa'
     
     Constants:
-    ENCODING -- The encoding for strings.
-    
     FLUID_NO_TYPE -- Settings type: Undefined type.
     FLUID_NUM_TYPE -- Settings type: Numeric (double).
     FLUID_INT_TYPE -- Settings type: Integer.
@@ -31,8 +30,6 @@ class FluidSettings(object):
     quality -- The last quality preset used (string).
     settings -- The FluidSynth settings object (fluidsettings_t).
     '''
-    
-    ENCODING = 'utf-8'
     
     (FLUID_NO_TYPE, 
      FLUID_NUM_TYPE, 
@@ -86,7 +83,7 @@ class FluidSettings(object):
     def __getitem__( self, key ):
         ''' Returns the value of the given settings key. '''
         
-        key = key.encode( self.ENCODING )
+        key = utility.fluidstring( key )
         key_type = self.handle.fluid_settings_get_type( self.settings, key )
         
         if key_type is self.FLUID_NUM_TYPE:
@@ -109,11 +106,11 @@ class FluidSettings(object):
     def __setitem__( self, key, value ):
         ''' Sets the value of the given settings key to value. '''
         
-        key = key.encode( self.ENCODING )
+        key = utility.fluidstring( key )
         key_type = self.handle.fluid_settings_get_type( self.settings, key )
         
         if key_type is self.FLUID_STR_TYPE:
-            value = value.encode( self.ENCODING )
+            value = utility.fluidstring( key )
             if not self.handle.fluid_settings_setstr( self.settings, key, value ):
                 raise KeyError( key )
             
