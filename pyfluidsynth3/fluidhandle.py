@@ -1,4 +1,4 @@
-from ctypes import cdll, c_char_p, c_double, c_int, c_short, c_uint, c_void_p
+from ctypes import cdll, CFUNCTYPE, c_char_p, c_double, c_int, c_short, c_uint, c_void_p
 from ctypes.util import find_library
 
 import os
@@ -195,6 +195,66 @@ class FluidHandle():
         self.fluid_event_set_dest = self.handle.fluid_event_set_dest
         self.fluid_event_set_dest.argtypes = (c_void_p, c_short)
         self.fluid_event_set_dest.restype = None
+        
+        # From seq.h
+        fluid_event_callback_t = CFUNCTYPE(None, c_uint, c_void_p, c_void_p, c_void_p)
+        
+        self.new_fluid_sequencer = self.handle.new_fluid_sequencer
+        self.new_fluid_sequencer.argtypes = ()
+        self.new_fluid_sequencer.restype = c_void_p
+        
+        self.delete_fluid_sequencer = self.handle.delete_fluid_sequencer
+        self.delete_fluid_sequencer.argtypes = (c_void_p,)
+        self.delete_fluid_sequencer.restype = None
+        
+        self.fluid_sequencer_count_clients = self.handle.fluid_sequencer_count_clients
+        self.fluid_sequencer_count_clients.argtypes = (c_void_p,)
+        self.fluid_sequencer_count_clients.restype = c_int
+        
+        self.fluid_sequencer_get_client_id = self.handle.fluid_sequencer_get_client_id
+        self.fluid_sequencer_get_client_id.argtypes = (c_void_p, c_int)
+        self.fluid_sequencer_get_client_id.restype = c_int
+        
+        self.fluid_sequencer_get_client_name = self.handle.fluid_sequencer_get_client_name
+        self.fluid_sequencer_get_client_name.argtypes = (c_void_p, c_int)
+        self.fluid_sequencer_get_client_name.restype = c_char_p
+        
+        self.fluid_sequencer_client_is_dest = self.handle.fluid_sequencer_client_is_dest
+        self.fluid_sequencer_client_is_dest.argtypes = (c_void_p, c_int)
+        self.fluid_sequencer_client_is_dest.restype = c_int
+        
+        self.fluid_sequencer_register_client = self.handle.fluid_sequencer_register_client
+        self.fluid_sequencer_register_client.argtypes = (c_void_p, c_char_p, fluid_event_callback_t, c_void_p)
+        self.fluid_sequencer_register_client.restype = c_short
+        
+        self.fluid_sequencer_unregister_client = self.handle.fluid_sequencer_unregister_client
+        self.fluid_sequencer_unregister_client.argtypes = (c_void_p, c_short)
+        self.fluid_sequencer_unregister_client.restype = None
+        
+        self.fluid_sequencer_send_now = self.handle.fluid_sequencer_send_now
+        self.fluid_sequencer_send_now.argtypes = (c_void_p, c_void_p)
+        self.fluid_sequencer_send_now.restype = None
+        
+        self.fluid_sequencer_send_at = self.handle.fluid_sequencer_send_at
+        self.fluid_sequencer_send_at.argtypes = (c_void_p, c_void_p, c_uint, c_int)
+        self.fluid_sequencer_send_at.restype = c_int
+        
+        self.fluid_sequencer_get_time_scale = self.handle.fluid_sequencer_get_time_scale
+        self.fluid_sequencer_get_time_scale.argtypes = (c_void_p,)
+        self.fluid_sequencer_get_time_scale.restype = c_double
+        
+        self.fluid_sequencer_set_time_scale = self.handle.fluid_sequencer_set_time_scale
+        self.fluid_sequencer_set_time_scale.argtypes = (c_void_p, c_double)
+        self.fluid_sequencer_set_time_scale.restype = None
+        
+        self.fluid_sequencer_get_tick = self.handle.fluid_sequencer_get_tick
+        self.fluid_sequencer_get_tick.argtypes = (c_void_p,)
+        self.fluid_sequencer_get_tick.restype = c_uint
+        
+        # From seqbind.h
+        self.fluid_sequencer_register_fluidsynth = self.handle.fluid_sequencer_register_fluidsynth
+        self.fluid_sequencer_register_fluidsynth.argtypes = (c_void_p, c_void_p)
+        self.fluid_sequencer_register_fluidsynth.restype = c_short
 
     def load_library( self, library_path ):
         ''' Create new FluidSynth handle with given library path. If no specific path is given
