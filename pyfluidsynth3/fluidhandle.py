@@ -1,4 +1,4 @@
-from ctypes import cdll, c_char_p, c_double, c_int, c_uint, c_void_p
+from ctypes import cdll, c_char_p, c_double, c_int, c_short, c_uint, c_void_p
 from ctypes.util import find_library
 
 import os
@@ -138,6 +138,63 @@ class FluidHandle():
         self.fluid_player_join = self.handle.fluid_player_join
         self.fluid_player_join.argtypes = (c_void_p,)
         self.fluid_player_join.restype = c_int
+        
+        # From event.h
+        self.new_fluid_event = self.handle.new_fluid_event
+        self.new_fluid_event.argtypes = ()
+        self.new_fluid_event.restype = c_void_p
+        
+        self.delete_fluid_event = self.handle.delete_fluid_event
+        self.delete_fluid_event.argtypes = (c_void_p,)
+        self.delete_fluid_event.restype = None
+        
+        self.fluid_event_timer = self.handle.fluid_event_timer
+        self.fluid_event_timer.argtypes = (c_void_p, c_void_p)
+        self.fluid_event_timer.restype = None
+        
+        self.fluid_event_volume = self.handle.fluid_event_volume
+        self.fluid_event_volume.argtypes = c_void_p, c_int, c_short
+        self.fluid_event_volume.restype = None
+        
+        self.fluid_event_note = self.handle.fluid_event_note
+        self.fluid_event_note.argtypes = (c_void_p, c_int, c_short, c_short, c_uint)
+        self.fluid_event_note.restype = None
+        
+        self.fluid_event_noteon = self.handle.fluid_event_noteon
+        self.fluid_event_noteon.argtypes = (c_void_p, c_int, c_short, c_short)
+        self.fluid_event_noteon.restype = None
+        
+        self.fluid_event_noteoff = self.handle.fluid_event_noteoff
+        self.fluid_event_noteoff.argtypes = (c_void_p, c_int, c_short)
+        self.fluid_event_noteoff.restype = None
+        
+        self.fluid_event_pitch_bend = self.handle.fluid_event_pitch_bend
+        self.fluid_event_pitch_bend.argtypes = c_void_p, c_int, c_int
+        self.fluid_event_pitch_bend.restype = None
+        
+        self.fluid_event_pitch_wheelsens = self.handle.fluid_event_pitch_wheelsens
+        self.fluid_event_pitch_wheelsens.argtypes = c_void_p, c_int, c_short
+        self.fluid_event_pitch_wheelsens.restype = None
+        
+        self.fluid_event_program_change = self.handle.fluid_event_program_change
+        self.fluid_event_program_change.argtypes = c_void_p, c_int, c_short
+        self.fluid_event_program_change.restype = None
+        
+        self.fluid_event_get_source = self.handle.fluid_event_get_source
+        self.fluid_event_get_source.argtypes = (c_void_p,)
+        self.fluid_event_get_source.restype = c_short
+        
+        self.fluid_event_set_source = self.handle.fluid_event_set_source
+        self.fluid_event_set_source.argtypes = (c_void_p, c_short)
+        self.fluid_event_set_source.restype = None
+        
+        self.fluid_event_get_dest = self.handle.fluid_event_get_dest
+        self.fluid_event_get_dest.argtypes = (c_void_p,)
+        self.fluid_event_get_dest.restype = c_short
+        
+        self.fluid_event_set_dest = self.handle.fluid_event_set_dest
+        self.fluid_event_set_dest.argtypes = (c_void_p, c_short)
+        self.fluid_event_set_dest.restype = None
 
     def load_library( self, library_path ):
         ''' Create new FluidSynth handle with given library path. If no specific path is given
