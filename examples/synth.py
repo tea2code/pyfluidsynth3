@@ -6,7 +6,7 @@ import time
 ''' Based on the examples from pyfluidsynth by MostAwesomeDude. '''
 
 if len( sys.argv ) < 3:
-    print( "Usage: %s library soundfont.sf2".format(sys.argv[0]) )
+    print( "Usage: {0} library soundfont.sf2".format(sys.argv[0]) )
     sys.exit()
 
 handle = fluidhandle.FluidHandle( sys.argv[1] )

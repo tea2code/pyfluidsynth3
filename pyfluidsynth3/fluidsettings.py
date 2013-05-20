@@ -1,5 +1,5 @@
-from . import utility
-from ctypes import byref, c_char_p, c_double, c_int, POINTER
+from . import constants, utility
+from ctypes import byref, c_char_p, c_double, c_int
 
 class FluidSettings(object):
     ''' Represents the FluidSynth settings as defined in settings.h. A instance of this class 
@@ -21,8 +21,6 @@ class FluidSettings(object):
     QUALITY_LOW -- Quality preset: Low.
     QUALITY_MED -- Quality preset: Medium.
     QUALITY_HIGH -- Quality preset: High.
-    FALSE -- Settings boolean value for false/off/no/0.
-    TRUE -- Settings boolean value for true/on/yes/1.
     
     Member:
     handle -- The handle to the FluidSynth library. Should be FluidHandle but a raw handle will 
@@ -40,9 +38,6 @@ class FluidSettings(object):
     QUALITY_LOW = 'low'
     QUALITY_MEDIUM = 'med'
     QUALITY_HIGH = 'high'
-    
-    FALSE = 0
-    TRUE = 1
 
     def __init__( self, handle ):
         ''' Create new FluidSynth settings instance using the given handle. Default quality is set 
@@ -62,18 +57,18 @@ class FluidSettings(object):
         self._quality = quality
         
         if quality == self.QUALITY_LOW:
-            self['synth.chorus.active'] = self.FALSE
-            self['synth.reverb.active'] = self.FALSE
+            self['synth.chorus.active'] = constants.FALSE
+            self['synth.reverb.active'] = constants.FALSE
             self['synth.sample-rate'] = 22050
             
         elif quality == self.QUALITY_MEDIUM:
-            self['synth.chorus.active'] = self.FALSE
-            self['synth.reverb.active'] = self.TRUE
+            self['synth.chorus.active'] = constants.FALSE
+            self['synth.reverb.active'] = constants.TRUE
             self['synth.sample-rate'] = 44100
             
         elif quality == self.QUALITY_HIGH:
-            self['synth.chorus.active'] = self.TRUE
-            self['synth.reverb.active'] = self.TRUE
+            self['synth.chorus.active'] = constants.TRUE
+            self['synth.reverb.active'] = constants.TRUE
             self['synth.sample-rate'] = 44100
 
     def __del__( self ):

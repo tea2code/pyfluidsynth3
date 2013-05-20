@@ -1,4 +1,4 @@
-from . import fluiderror, fluidsynth, utility
+from . import constants, fluiderror, fluidsynth, utility
 
 class FluidPlayer():
     ''' Represents the FluidSynth player object as defined in midi.h.
@@ -24,7 +24,7 @@ class FluidPlayer():
         self.stop()
         self.join()
 
-        if self.handle.delete_fluid_player( self.player ) is fluidsynth.FluidSynth.FLUID_FAILED:
+        if self.handle.delete_fluid_player( self.player ) is constants.FAILED:
             raise fluiderror.FluidError( "Couldn't delete fluid player!" )
 
     def add( self, midi ):
