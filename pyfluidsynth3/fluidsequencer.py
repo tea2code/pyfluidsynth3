@@ -85,10 +85,6 @@ class FluidSequencer( dict ):
         ''' Returns the current tick. '''
         return self.handle.fluid_sequencer_get_tick( self.seq )
 
-    def is_dest( self, id ):
-        ''' Check if a client is a destination client. '''
-        return self.handle.fluid_sequencer_client_is_dest( self.seq, id ) == constants.TRUE
-
     def add_synth( self, synth ):
         ''' Register a FluidSynth object and return id and client name. '''
         id = self.handle.fluid_sequencer_register_fluidsynth( self.seq, synth.synth )
@@ -98,9 +94,16 @@ class FluidSequencer( dict ):
 
         return id, name
 
+    def is_dest( self, id ):
+        ''' Check if a client is a destination client. Returns true if is destination client else 
+        false. '''
+        result = self.handle.fluid_sequencer_client_is_dest( self.seq, id )
+        return result == constants.TRUE
+        
     def send( self, event, timestamp, absolute = True ):
-        ''' Schedule an event for sending at a later time. '''
-        self.handle.fluid_sequencer_send_at( self.seq, event.event, timestamp, absolute )
+        ''' Schedule an event for sending at a later time. Returns true if success else false. '''
+        result = self.handle.fluid_sequencer_send_at( self.seq, event.event, timestamp, absolute )
+        return result == constants.OK
 
     def send_right_now(self, event):
         ''' Send an event immediately. '''
