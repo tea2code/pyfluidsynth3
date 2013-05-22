@@ -64,6 +64,7 @@ I tried to give every method a meaningful result which also matches more the ori
 
 If you try to access FluidSynth raw method you must encode every string parameter because of Python 3's navtive unicode support (which is by the way great). I added a utility method *fluidstring()* which does this.
 
-## TODO
+## Known Issues
 
-- Implement missing FluidSynth methods.
+- Not all FluidSynth methods are implemented.
+- The example sequencer.py seems not to work.
