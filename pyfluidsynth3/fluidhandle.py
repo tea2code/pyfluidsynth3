@@ -2,6 +2,7 @@ from ctypes import cdll, CFUNCTYPE, c_char_p, c_double, c_int, c_short, c_uint, 
 from ctypes.util import find_library
 
 import os
+import re
 
 class FluidHandle():
     ''' Creates a handle to the FluidSynth library. A instance of this class can be used the same
@@ -11,12 +12,21 @@ class FluidHandle():
     This class is inspired by the bindings from pyFluidSynth by Whitehead and pyfluidsynth by 
     MostAwesomeDude.
     
+    Constants:
+    LIBRARY_NAMES -- List of possible library names.
+    LIBRARY_REGEX -- Regular expression to identify a library path.
+    
     Member:
     handle -- The raw library handle. 
     library_path -- The path of the loaded library (string).
     '''
     
+    LIBRARY_NAMES = [ 'fluidsynth', 'libfluidsynth', 'libfluidsynth-1' ]
+    LIBRARY_REGEX = r'.*fluidsynth(-\d+)?\.(dll|so(\.\d+)?)$'
+    
     def __init__( self, library_path = None ):
+        ''' Creates a handle to the FluidSynth library. If a path is given it tries to use this path
+        if not it searches for the library. '''
         self.handle = self.load_library( library_path )
         
         # From settings.h
@@ -261,12 +271,24 @@ class FluidHandle():
         or the file doesn't exist this class will try to find the library based on some basic 
         heuristics. '''
         
-        # TODO: Search in current directory.
-        if not library_path or not os.path.isfile( library_path ):
-            self.library_path = find_library('fluidsynth') or \
-                                find_library('libfluidsynth') or \
-                                find_library('libfluidsynth-1')
-        else:
-            self.library_path = library_path
-            
+        # Search library in local context.
+        if not self.__is_file( library_path ):
+            for file in os.listdir( '.' ):
+                if re.search( self.LIBRARY_REGEX, file ):
+                    library_path = os.path.abspath( file )
+                    break
+        
+        # Search library in global context.
+        if not self.__is_file( library_path ):
+            for name in self.LIBRARY_NAMES:
+                library_path = find_library( name )
+                if library_path:
+                    break
+
+        # Use hopefully found library path to load library.
+        self.library_path = library_path
         return cdll.LoadLibrary( self.library_path )
+    
+    def __is_file( self, path ):
+        ''' Checks if the given string is a file path. '''
+        return path and os.path.isfile( path )
